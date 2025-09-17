@@ -12,9 +12,9 @@ SHOW_PLOTS = True
 TOP_N = 5   # quantos produtos mostrar na pizza
 
 # ---- Função de formatação em reais (pt-BR) ----
-def fmt_brl(v):
-    """Formata número float como R$ 1.234,56."""
-    return f'R$ {v:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
+def formatação_em_real(v):
+    """Formata número float como R$ 1.234,56 (versão simplificada)."""
+    return "R$ " + "{:,.2f}".format(v).replace(",", ".").replace(".", ",", 1)
 
 def make_df(n: int = N_REGISTROS) -> pd.DataFrame:
     faker = Faker("pt_BR")
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         # aplica formatação BRL ao mostrar
         preco_medio = df.groupby("Produto")["Preço (R$)"].mean()
         for produto, valor in preco_medio.items():
-            print(f"{produto}: {fmt_brl(valor)}")
+            print(f"{produto}: {formatação_em_real(valor)}")
 
         # ---- Gráficos ----
         # 1) Estoque total (barra)
@@ -76,19 +76,10 @@ if __name__ == "__main__":
 
         # 2) Top N produtos mais caros (pizza)
         top_caros = preco_medio.sort_values(ascending=False).head(TOP_N)
-        labels = [f"{nome} — {fmt_brl(v)}" for nome, v in top_caros.items()]
+        labels = [f"{nome} — {formatação_em_real(v)}" for nome, v in top_caros.items()]
         plt.pie(top_caros, labels=labels, autopct="%1.1f%%")
         plt.title(f"Top {TOP_N} Produtos Mais Caros (Preço Médio)")
         plt.ylabel("")
         plt.show()
 
-        # 3) Preço vs Estoque (dispersão)
-        fig, ax = plt.subplots()
-        ax.scatter(df["Preço (R$)"], df["Estoque"], alpha=0.6)
-        ax.set_title("Preço vs Estoque")
-        ax.set_xlabel("Preço (R$)")
-        ax.set_ylabel("Estoque")
-        # eixo X em reais
-        ax.xaxis.set_major_formatter(FuncFormatter(lambda x, pos: fmt_brl(x)))
-        plt.tight_layout()
-        plt.show()
+  
