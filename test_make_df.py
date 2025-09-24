@@ -6,7 +6,7 @@ LINHAS = 1000
 
 
 def test_tem_pelo_menos_500():
-    df = make_df(N)
+    df = make_df(LINHAS)
     assert len(df) >= 500
 
 
@@ -20,3 +20,4 @@ def test_salvamento_csv_rapido(tmp_path):
     assert tempo_gasto <= TEMPO_GASTO, (
         f"CSV levou {tempo_gasto:.4f}s (> {TEMPO_GASTO}s)"
     )
+
