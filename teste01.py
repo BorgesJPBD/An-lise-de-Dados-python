@@ -11,14 +11,14 @@ MOSTRAR_GRAFICOS = True
 TOP_N = 5
 
 
-locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8") #Define a localidade para Brasil
+locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8") 
 
 def formatação_em_real(v):
-    """Formata número como moeda BRL"""
-    return locale.currency(v, grouping=True, symbol=True) #Currency formata um número como moeda
+    
+    return locale.currency(v, grouping=True, symbol=True) 
 
 def make_df(n: int = N_REGISTROS) -> pd.DataFrame:
-    """Gera DataFrame com dados fictícios"""
+    
     faker = Faker("pt_BR")
     random.seed(2)
     produtos = ["Notebook","Mouse","Teclado","Monitor","Impressora","HD Externo","SSD","Placa de Vídeo"]
@@ -30,9 +30,9 @@ def make_df(n: int = N_REGISTROS) -> pd.DataFrame:
     } for _ in range(n)] 
     return pd.DataFrame(dados).convert_dtypes() 
 
-def salvar_csv_temporizado(df: pd.DataFrame, path: str) -> float:  
+def salvar_csv_temporizado(df: pd.DataFrame, ARQUIVO_CSV: str) -> float:  
     tempo = time.perf_counter() 
-    df.to_csv(path, index=False, encoding="utf-8") 
+    df.to_csv(ARQUIVO_CSV, index=False, encoding="utf-8") 
     return time.perf_counter() - tempo 
 
 if __name__ == "__main__":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     secs = salvar_csv_temporizado(df, ARQUIVO_CSV)
     print(f"\nCSV salvo em '{ARQUIVO_CSV}' em {secs:.4f}s") 
-    print(f"Linhas: {len(df)}  |  Colunas: {list(df.columns)}") 
+    print(f"Linhas: {len(df)}")
 
     if MOSTRAR_GRAFICOS:
         df = pd.read_csv(ARQUIVO_CSV)
